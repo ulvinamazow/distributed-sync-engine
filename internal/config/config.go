@@ -10,6 +10,7 @@ import (
 type Config struct {
 	NodeID          string
 	HTTPAddr        string
+	DatabaseURL     string
 	ShutdownTimeout time.Duration
 }
 
@@ -18,6 +19,7 @@ func Load() (*Config, error) {
 	cfg := &Config{
 		NodeID:          getEnv("NODE_ID", "node-1"),
 		HTTPAddr:        getEnv("HTTP_ADDR", ":8080"),
+		DatabaseURL:     getEnv("DATABASE_URL", ""),
 		ShutdownTimeout: 10 * time.Second,
 	}
 
