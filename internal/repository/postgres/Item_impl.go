@@ -110,3 +110,22 @@ func (r *ItemRepo) List(ctx context.Context) ([]*domain.Item, error) {
 	}
 	return items, nil
 }
+
+func (r *ItemRepo) UpsertFromRemote(ctx context.Context, item *domain.Item) error {
+	query := ` INSERT INTO items (id, name, description, created_at, updated_at)
+	VALUES ($1, $2, $3, $4, $5)
+	ON CONFLICT (ID) DO UPDATE SET
+	name = EXCLUDED.name,
+	description = EXCLUDED.description,
+	updated_at = EXCLUDED.updated_at
+	WHERE items.updated_at < EXCLUDED.updated_at
+	`
+	_, err := r.pool.Exec(ctx, query, item.ID, item.Name,
+		item.Description, item.CreatedAt, item.UpdatedAt)
+
+	if err != nil {
+		return fmt.Errorf("upsert unsuccesful: %w", err)
+	}
+
+	return nil
+}

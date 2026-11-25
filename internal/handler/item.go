@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"net/http"
+	"time"
 
 	"github.com/google/uuid"
 
@@ -27,8 +28,8 @@ func toItemResponse(it *domain.Item) response.ItemResponse {
 		ID:          it.ID.String(),
 		Name:        it.Name,
 		Description: it.Description,
-		CreatedAt:   it.CreatedAt.Format("2006-01-02T15:04:05.000Z07:00"),
-		UpdatedAt:   it.UpdatedAt.Format("2006-01-02T15:04:05.000Z07:00"),
+		CreatedAt:   it.CreatedAt.Format(time.RFC3339Nano),
+		UpdatedAt:   it.UpdatedAt.Format(time.RFC3339Nano),
 	}
 }
 

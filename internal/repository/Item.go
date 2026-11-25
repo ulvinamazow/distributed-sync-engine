@@ -13,4 +13,5 @@ type ItemRepository interface {
 	Update(ctx context.Context, item *domain.Item) error
 	Delete(ctx context.Context, id uuid.UUID) error
 	List(ctx context.Context) ([]*domain.Item, error)
+	UpsertFromRemote(ctx context.Context, item *domain.Item) error
 }
